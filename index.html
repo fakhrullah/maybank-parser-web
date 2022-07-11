@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Statement Parser</title>
+</head>
+<body>
+    <div>
+        <textarea id="input"></textarea>
+    </div>
+    <button id="convertBtn">Convert</button>
+    <div>
+        <code id="output"></code>
+    </div>
+    <script>
+        const outputElement = document.getElementById('output');
+        const inputElement = document.getElementById('input');
+
+        const convertBtn = document.getElementById('convertBtn');
+        convertBtn.addEventListener('click', (item, event) => {
+            console.log('Convert button is clicked');
+            
+            const inputContent = inputElement.value;
+            const parsedContent = inputContent;
+
+            outputElement.textContent = parsedContent;
+        });
+    </script>
+</body>
+</html>

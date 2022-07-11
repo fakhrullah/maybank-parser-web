@@ -1,0 +1,11 @@
+{
+  "name": "bank-parser-web",
+  "version": "1.0.0",
+  "description": "Frontend website to take copy pasted bank statement then convert to json or csv.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Fakhrullah Padzil",
+  "license": "ISC"
+}
