@@ -1,23 +1,27 @@
-import logo from './logo.svg';
-import styles from './App.module.css';
 
 function App() {
+
+  const outputString = { output: "miaw", hello: [1, 2, 4] };
+  const output = JSON.stringify(outputString, null, 4);
+
   return (
-    <div class={styles.App}>
-      <header class={styles.header}>
-        <img src={logo} class={styles.logo} alt="logo" />
-        <p>
-          Edit <code>src/App.jsx</code> and save to reload.
-        </p>
-        <a
-          class={styles.link}
-          href="https://github.com/solidjs/solid"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn Solid
-        </a>
+    <div class="">
+      <header class="">
+        <h1>
+          <a
+            class=""
+            href="/"
+          >
+            Maybank Statement Parser
+          </a>
+        </h1>
       </header>
+      <main>
+        <div>
+          <textarea name="" id="" cols="30" rows="10"></textarea>
+        </div>
+        <div class="output"><pre>{output}</pre></div>
+      </main>
     </div>
   );
 }
