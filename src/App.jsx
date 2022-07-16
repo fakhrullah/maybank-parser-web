@@ -7,7 +7,7 @@ function App() {
   return (
     <div class="">
       <header class="">
-        <h1>
+        <h1 class="text-3xl font-light text-red-300">
           <a
             class=""
             href="/"
