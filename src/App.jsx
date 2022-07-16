@@ -1,3 +1,5 @@
+import ButtonPrimary from "./ButtonPrimary";
+import ButtonSecondary from "./ButtonSecondary";
 import Input from "./Input";
 
 function App() {
@@ -68,9 +70,9 @@ function App() {
         </div>
 
         {/* Actions */}
-        <button class="m-1 px-5 py-1 rounded-md bg-gray-600 text-white shadow-gray-800 shadow-sm hover:bg-gray-800">Convert</button>
-        <button class="m-1 px-5 py-1 rounded-md bg-gray-100 text-gray-500 shadow-gray-600 border hover:bg-gray-200">Download CSV</button>
-        <button class="m-1 px-5 py-1 rounded-md bg-gray-100 text-gray-500 shadow-gray-600 border hover:bg-gray-200">Download JSON</button>
+        <ButtonPrimary>Convert</ButtonPrimary>
+        <ButtonSecondary>Download CSV</ButtonSecondary>
+        <ButtonSecondary>Download JSON</ButtonSecondary>
       </main>
     </div>
   );
