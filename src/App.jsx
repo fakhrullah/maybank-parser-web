@@ -1,15 +1,18 @@
+import { createSignal } from "solid-js";
 import ButtonPrimary from "./ButtonPrimary";
 import ButtonSecondary from "./ButtonSecondary";
 import Input from "./Input";
 
 function App() {
 
+  const [inputString, setInputString] = createSignal('');
+
   const outputString = { output: "miaw", hello: [1, 2, 4] };
   const output = JSON.stringify(outputString, null, 4);
 
-  const setStatementInput = (e) => {
-    console.log('hello');
-    value = e.target.value;
+  const inputHandler = (e) => {
+    setInputString(e.target.value);
+    console.log(inputString());
   }
 
   const formattedOutput = () => {
@@ -64,7 +67,7 @@ function App() {
       <main>
         <div class="flex">
           <div class="flex-1 bg-gray-300">
-            <Input value="hello" className="block w-full bg-transparent p-2" />
+            <Input value={inputString} onInput={inputHandler} className="block w-full bg-transparent p-2" />
           </div>
           <div class="output flex-1 p-2 bg-gray-100">{formattedOutput()}</div>
         </div>
