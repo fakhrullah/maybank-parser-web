@@ -1,3 +1,4 @@
+import { parser as maybankStatementParser } from "maybank-statement-parser";
 import { createSignal } from "solid-js";
 import ButtonPrimary from "./ButtonPrimary";
 import ButtonSecondary from "./ButtonSecondary";
@@ -6,50 +7,62 @@ import Input from "./Input";
 function App() {
 
   const [inputString, setInputString] = createSignal('');
-
-  const outputString = { output: "miaw", hello: [1, 2, 4] };
-  const output = JSON.stringify(outputString, null, 4);
+  const [output, setOutput] = createSignal(<></>);
 
   const inputHandler = (e) => {
     setInputString(e.target.value);
-    console.log(inputString());
+    // console.log(inputString());
   }
 
+  const formatDate = (date) => new Intl.DateTimeFormat().format(date)
+
   const formattedOutput = () => {
-    const statementData = "";
 
-    const data = [
-      {
-        a: 'wfgeg',
-        b: 32423,
-        c: 'fawef',
-        d: 'hello',
-        e: 3223.23
-      },
+    try {
 
-      {
-        a: 'wfgeg',
-        b: 8975,
-        c: 'fawef',
-        d: 'hello',
-        e: 73.29
-      }
-    ];
+      console.log('Format output');
+      const transactions = maybankStatementParser(inputString());
+      console.log(transactions);
 
-    const formattedData = () => (<table>
-      <thead>
+      const tBody = transactions.map((t) => (<tr>
+        <td class="border border-gray-400 px-3">
+          {formatDate(t.date)}
+        </td>
+        <td class="border border-gray-400 px-3">
+          {t.type === 'income' && t.value}
+        </td>
+        <td class="border border-gray-400 px-3">
+          {t.type === 'outgoing' && t.value}
+        </td>
+        <td class="border border-gray-400 px-3">
+          {t.description}
+        </td>
+        <td class="border border-gray-400 px-3">
+          {t.moreDetail.map(detail => <div>{detail}</div>)}
+        </td>
+      </tr>
+      ));
 
-      </thead>
-      <tbody>
-        {data.map((obj) => (
+      const createHtmlTable = () => (<table>
+        <thead>
           <tr>
-            {Object.values(obj).map(v => (<td class="border border-gray-400 px-3">{v}</td>))}
+            <th>Date</th>
+            <th>Income</th>
+            <th>Outgoing</th>
+            <th>Description</th>
+            <th>Detail</th>
           </tr>
-        ))}
-      </tbody>
-    </table>);
+        </thead>
+        <tbody>{tBody}</tbody>
+      </table>);
 
-    return formattedData();
+      setOutput(createHtmlTable);
+
+    } catch (error) {
+      setOutput(<pre>No data found. Error {error.message}</pre>);
+    }
+
+
   }
 
   return (
@@ -69,11 +82,11 @@ function App() {
           <div class="flex-1 bg-gray-300">
             <Input value={inputString} onInput={inputHandler} className="block w-full bg-transparent p-2" />
           </div>
-          <div class="output flex-1 p-2 bg-gray-100">{formattedOutput()}</div>
+          <div class="output flex-1 p-2 bg-gray-100">{output()}</div>
         </div>
 
         {/* Actions */}
-        <ButtonPrimary>Convert</ButtonPrimary>
+        <ButtonPrimary onClick={() => formattedOutput()}>Convert</ButtonPrimary>
         <ButtonSecondary>Download CSV</ButtonSecondary>
         <ButtonSecondary>Download JSON</ButtonSecondary>
       </main>
