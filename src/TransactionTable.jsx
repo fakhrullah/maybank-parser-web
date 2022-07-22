@@ -31,15 +31,15 @@ function TransactionTable({transactions}) {
       ));
     
       const tHead = (<tr>
-        <th>Date</th>
-        <th>Income</th>
-        <th>Outgoing</th>
-        <th>Balance</th>
-        <th>Description</th>
-        <th>Detail</th>
+        <th class="border border-gray-400">Date</th>
+        <th class="border border-gray-400">Income</th>
+        <th class="border border-gray-400">Outgoing</th>
+        <th class="border border-gray-400">Balance</th>
+        <th class="border border-gray-400">Description</th>
+        <th class="border border-gray-400">Detail</th>
       </tr>);
     
-      const table = () => (<table>
+      const table = () => (<table class="mx-4 inline-block">
         <thead>{tHead}</thead>
         <tbody>{tBody}</tbody>
       </table>);

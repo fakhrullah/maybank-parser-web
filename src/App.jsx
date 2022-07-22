@@ -27,11 +27,11 @@ function App() {
       switch (format) {
         case 'csv':
           const csvOutput = convertToCSV(transactions);
-          setOutput(<pre>{csvOutput}</pre>)
+          setOutput(<pre class="mx-4 inline-block">{csvOutput}</pre>)
           break;
 
         default:
-          const tableOutput = TransactionTable({transactions});
+          const tableOutput = TransactionTable({ transactions });
           setOutput(tableOutput);
           break;
       }
@@ -48,21 +48,27 @@ function App() {
     <div class="">
       <header class="">
         <h1 class="text-3xl font-normal py-4 px-2">
-            Maybank Statement Parser
+          Maybank Statement Parser
         </h1>
       </header>
       <main>
-        <div class="flex">
-          <div class="flex-1 bg-gray-300">
-            <Input value={inputString} onInput={inputHandler} className="block w-full bg-transparent p-2" />
+        <div class="">
+          <div class="p-2">
+            <Input
+              value={inputString}
+              onInput={inputHandler}
+              className="w-full bg-gray-200 p-2"
+              placeholder="Paste your maybank statement here" />
           </div>
-          <div class="output flex-1 p-2 bg-gray-100">{output()}</div>
+
+          {/* Actions */}
+          <ButtonPrimary onClick={() => formattedOutput()}>Convert</ButtonPrimary>
+          <ButtonSecondary onClick={() => formattedOutput('csv')}>Convert to CSV</ButtonSecondary>
+          <ButtonSecondary>Download JSON</ButtonSecondary>
+
+          <div class="output py-2 bg-gray-100 overflow-auto">{output()}</div>
         </div>
 
-        {/* Actions */}
-        <ButtonPrimary onClick={() => formattedOutput()}>Convert</ButtonPrimary>
-        <ButtonSecondary onClick={() => formattedOutput('csv')}>Convert to CSV</ButtonSecondary>
-        <ButtonSecondary>Download JSON</ButtonSecondary>
       </main>
     </div>
   );
