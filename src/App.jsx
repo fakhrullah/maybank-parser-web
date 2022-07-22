@@ -1,50 +1,47 @@
+import { parser as maybankStatementParser } from "maybank-statement-parser";
+import { createSignal } from "solid-js";
+import ButtonPrimary from "./ButtonPrimary";
+import ButtonSecondary from "./ButtonSecondary";
+import { convertToCSV } from "./helpers";
 import Input from "./Input";
+import TransactionTable from "./TransactionTable";
 
 function App() {
 
-  const outputString = { output: "miaw", hello: [1, 2, 4] };
-  const output = JSON.stringify(outputString, null, 4);
+  const [inputString, setInputString] = createSignal('');
+  const [output, setOutput] = createSignal(<></>);
 
-  const setStatementInput = (e) => {
-    console.log('hello');
-    value = e.target.value;
+  const inputHandler = (e) => {
+    setInputString(e.target.value);
+    // console.log(inputString());
   }
 
-  const formattedOutput = () => {
-    const statementData = "";
+  const formattedOutput = (format) => {
 
-    const data = [
-      {
-        a: 'wfgeg',
-        b: 32423,
-        c: 'fawef',
-        d: 'hello',
-        e: 3223.23
-      },
+    try {
 
-      {
-        a: 'wfgeg',
-        b: 8975,
-        c: 'fawef',
-        d: 'hello',
-        e: 73.29
+      console.log('Format output');
+      const transactions = maybankStatementParser(inputString());
+      console.log(transactions);
+
+      switch (format) {
+        case 'csv':
+          const csvOutput = convertToCSV(transactions);
+          setOutput(<pre>{csvOutput}</pre>)
+          break;
+
+        default:
+          const tableOutput = TransactionTable({transactions});
+          setOutput(tableOutput);
+          break;
       }
-    ];
 
-    const formattedData = () => (<table>
-      <thead>
 
-      </thead>
-      <tbody>
-        {data.map((obj) => (
-          <tr>
-            {Object.values(obj).map(v => (<td class="border border-gray-400 px-3">{v}</td>))}
-          </tr>
-        ))}
-      </tbody>
-    </table>);
+    } catch (error) {
+      setOutput(<pre>No data found. Error {error.message}</pre>);
+    }
 
-    return formattedData();
+
   }
 
   return (
@@ -62,15 +59,15 @@ function App() {
       <main>
         <div class="flex">
           <div class="flex-1 bg-gray-300">
-            <Input value="hello" className="block w-full bg-transparent p-2" />
+            <Input value={inputString} onInput={inputHandler} className="block w-full bg-transparent p-2" />
           </div>
-          <div class="output flex-1 p-2 bg-gray-100">{formattedOutput()}</div>
+          <div class="output flex-1 p-2 bg-gray-100">{output()}</div>
         </div>
 
         {/* Actions */}
-        <button class="m-1 px-5 py-1 rounded-md bg-gray-600 text-white shadow-gray-800 shadow-sm hover:bg-gray-800">Convert</button>
-        <button class="m-1 px-5 py-1 rounded-md bg-gray-100 text-gray-500 shadow-gray-600 border hover:bg-gray-200">Download CSV</button>
-        <button class="m-1 px-5 py-1 rounded-md bg-gray-100 text-gray-500 shadow-gray-600 border hover:bg-gray-200">Download JSON</button>
+        <ButtonPrimary onClick={() => formattedOutput()}>Convert</ButtonPrimary>
+        <ButtonSecondary onClick={() => formattedOutput('csv')}>Convert to CSV</ButtonSecondary>
+        <ButtonSecondary>Download JSON</ButtonSecondary>
       </main>
     </div>
   );
