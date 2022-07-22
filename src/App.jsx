@@ -47,13 +47,8 @@ function App() {
   return (
     <div class="">
       <header class="">
-        <h1 class="text-3xl font-light text-red-300">
-          <a
-            class=""
-            href="/"
-          >
+        <h1 class="text-3xl font-normal py-4 px-2">
             Maybank Statement Parser
-          </a>
         </h1>
       </header>
       <main>
