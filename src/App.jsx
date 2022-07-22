@@ -2,7 +2,9 @@ import { parser as maybankStatementParser } from "maybank-statement-parser";
 import { createSignal } from "solid-js";
 import ButtonPrimary from "./ButtonPrimary";
 import ButtonSecondary from "./ButtonSecondary";
+import { convertToCSV } from "./helpers";
 import Input from "./Input";
+import TransactionTable from "./TransactionTable";
 
 function App() {
 
@@ -14,9 +16,7 @@ function App() {
     // console.log(inputString());
   }
 
-  const formatDate = (date) => new Intl.DateTimeFormat().format(date)
-
-  const formattedOutput = () => {
+  const formattedOutput = (format) => {
 
     try {
 
@@ -24,39 +24,18 @@ function App() {
       const transactions = maybankStatementParser(inputString());
       console.log(transactions);
 
-      const tBody = transactions.map((t) => (<tr>
-        <td class="border border-gray-400 px-3">
-          {formatDate(t.date)}
-        </td>
-        <td class="border border-gray-400 px-3">
-          {t.type === 'income' && t.value}
-        </td>
-        <td class="border border-gray-400 px-3">
-          {t.type === 'outgoing' && t.value}
-        </td>
-        <td class="border border-gray-400 px-3">
-          {t.description}
-        </td>
-        <td class="border border-gray-400 px-3">
-          {t.moreDetail.map(detail => <div>{detail}</div>)}
-        </td>
-      </tr>
-      ));
+      switch (format) {
+        case 'csv':
+          const csvOutput = convertToCSV(transactions);
+          setOutput(<pre>{csvOutput}</pre>)
+          break;
 
-      const createHtmlTable = () => (<table>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Income</th>
-            <th>Outgoing</th>
-            <th>Description</th>
-            <th>Detail</th>
-          </tr>
-        </thead>
-        <tbody>{tBody}</tbody>
-      </table>);
+        default:
+          const tableOutput = TransactionTable({transactions});
+          setOutput(tableOutput);
+          break;
+      }
 
-      setOutput(createHtmlTable);
 
     } catch (error) {
       setOutput(<pre>No data found. Error {error.message}</pre>);
@@ -87,7 +66,7 @@ function App() {
 
         {/* Actions */}
         <ButtonPrimary onClick={() => formattedOutput()}>Convert</ButtonPrimary>
-        <ButtonSecondary>Download CSV</ButtonSecondary>
+        <ButtonSecondary onClick={() => formattedOutput('csv')}>Convert to CSV</ButtonSecondary>
         <ButtonSecondary>Download JSON</ButtonSecondary>
       </main>
     </div>
