@@ -12,22 +12,23 @@ export const convertToCSV = (transactions) => {
   transactions.forEach(({
     date, type, value, balance, description, moreDetail,
   }) => {
-    const currencyFormat = new Intl.NumberFormat('ms-MY', {
-      minimumFractionDigits: 2,
-    });
-    const dateFormat = (date) => new Intl.DateTimeFormat().format(date)
-    const formattedDate = dateFormat(date);
+    
+    const formattedDate = formatDate(date);
     const income = type === 'income' ? value / 100 : 0;
     const outgoing = type === 'outgoing' ? value / 100 : 0;
 
     // const formattedBalance = numFormat.format(balance / 100);
     const formattedBalance = balance / 100;
 
-    const line = `${formattedDate},${currencyFormat.format(income)},${currencyFormat.format(outgoing)},${currencyFormat.format(formattedBalance)},"${description}","${moreDetail.join(', ')}"`;
+    const line = `${formattedDate},${formatCurrencyRM(income)},${formatCurrencyRM(outgoing)},${formatCurrencyRM(formattedBalance)},"${description}","${moreDetail.join(', ')}"`;
     output.push(line);
   });
 
   return output.join('\n');
 };
 
-export const formatDate = (date) => new Intl.DateTimeFormat().format(date);
+export const formatDate = (date) => new Intl.DateTimeFormat('ms-MY').format(date);
+
+export const formatCurrencyRM = (cents) => Intl.NumberFormat('ms-MY', {
+  minimumFractionDigits: 2,
+}).format(cents);

@@ -1,4 +1,4 @@
-function Input({ value, className, onInput }) {
+function Input({ value, className, onInput, ...props }) {
     return (
         <textarea
             name=""
@@ -6,6 +6,7 @@ function Input({ value, className, onInput }) {
             rows="10"
             class={className}
             onInput={(e) => onInput(e)}
+            {...props}
         >{value}</textarea>
     );
 }
